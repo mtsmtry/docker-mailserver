@@ -20,9 +20,9 @@ services:
       - /mnt/codestar/mailserver/maildata:/var/mail
       - /mnt/codestar/mailserver/mailstate:/var/mail-state
       - /mnt/codestar/mailserver/maillogs:/var/log/mail
+      - /mnt/codestar/mailserver/config:/tmp/docker-mailserver/
       - /etc/localtime:/etc/localtime:ro
       - /etc/letsencrypt:/etc/letsencrypt
-      - ./config/:/tmp/docker-mailserver/
     restart: always
     stop_grace_period: 1m
     cap_add:
