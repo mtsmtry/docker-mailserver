@@ -4,7 +4,7 @@ services:
   mailserver:
     image: docker.io/mailserver/docker-mailserver:latest
     hostname: mail
-    domainname: codestar.env
+    domainname: codestar.dev
     container_name: mailserver
     env_file: mailserver.env
     # To avoid conflicts with yaml base-60 float, DO NOT remove the quotation marks.
@@ -21,6 +21,7 @@ services:
       - /mnt/codestar/mailserver/mailstate:/var/mail-state
       - /mnt/codestar/mailserver/maillogs:/var/log/mail
       - /etc/localtime:/etc/localtime:ro
+      - /etc/letsencrypt:/etc/letsencrypt
       - ./config/:/tmp/docker-mailserver/
     restart: always
     stop_grace_period: 1m
