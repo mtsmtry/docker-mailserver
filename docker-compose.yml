@@ -4,7 +4,7 @@ services:
   mailserver:
     image: docker.io/mailserver/docker-mailserver:latest
     hostname: mail
-    domainname: example.com
+    domainname: codestar.env
     container_name: mailserver
     env_file: mailserver.env
     # To avoid conflicts with yaml base-60 float, DO NOT remove the quotation marks.
@@ -17,9 +17,9 @@ services:
       - "587:587"  # ESMTP (explicit TLS => STARTTLS)
       - "993:993"  # IMAP4 (implicit TLS)
     volumes:
-      - ./data/maildata:/var/mail
-      - ./data/mailstate:/var/mail-state
-      - ./data/maillogs:/var/log/mail
+      - /mnt/codestar/mailserver/maildata:/var/mail
+      - /mnt/codestar/mailserver/mailstate:/var/mail-state
+      - /mnt/codestar/mailserver/maillogs:/var/log/mail
       - /etc/localtime:/etc/localtime:ro
       - ./config/:/tmp/docker-mailserver/
     restart: always
