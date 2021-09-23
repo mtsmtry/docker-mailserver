@@ -76,28 +76,25 @@ All workflows are using the tagging convention listed below. It is subsequently 
 
 ### Get the tools
 
-Download `docker-compose.yml` and `mailserver.env`
+Since Docker Mailserver `v10.2.0`, `setup.sh` functionality is included within the Docker image. The external convenience script is no longer required if you prefer using `docker exec <CONTAINER NAME> setup <COMMAND>` instead.
+
+**Note:** If you're using Docker or Docker Compose and are new to Docker Mailserver, it is recommended to use the script `setup.sh` for convenience.
 
 ``` BASH
-wget https://raw.githubusercontent.com/docker-mailserver/docker-mailserver/master/docker-compose.yml
-wget https://raw.githubusercontent.com/docker-mailserver/docker-mailserver/master/mailserver.env
-```
-
-and the `setup.sh` **in the correct version**
-
-``` BASH
-# if you're using :edge as the image tag
-wget https://raw.githubusercontent.com/docker-mailserver/docker-mailserver/master/setup.sh
-# if you're using :latest (= :10.1.1) as the image tag
-wget https://raw.githubusercontent.com/docker-mailserver/docker-mailserver/v10.1.2/setup.sh
+DMS_GITHUB_URL='https://raw.githubusercontent.com/docker-mailserver/docker-mailserver/master'
+wget "${DMS_GITHUB_URL}/docker-compose.yml"
+wget "${DMS_GITHUB_URL}/mailserver.env"
+wget "${DMS_GITHUB_URL}/setup.sh"
 
 chmod a+x ./setup.sh
-
-# and make yourself familiar with the script
 ./setup.sh help
 ```
 
-**Make sure to get the `setup.sh` that comes with the release you're using**. Look up the release and the git commit on which this release is based upon by selecting the appropriate tag on GitHub. This can done with the "Switch branches/tags" button on GitHub, choosing the right tag. This is done in order to rule out possible inconsistencies between versions.
+If no `docker-mailserver` container is running, any `./setup.sh` command will check online for the `:latest` image tag (the current stable release), performing a `pull` if necessary followed by running the command in a temporary container. 
+
+#### `setup.sh` for Docker Mailserver version `v10.1.x` and below
+
+If you're using Docker Mailserver version `v10.1.x` or below, you will need to get `setup.sh` with a specific version. Substitute `<VERSION>` with the mail server version you're using: `wget https://raw.githubusercontent.com/docker-mailserver/docker-mailserver/<VERSION>/setup.sh`.
 
 ### Create a docker-compose environment
 
@@ -282,3 +279,7 @@ services:
       - SYS_PTRACE
     restart: always
 ```
+
+
+
+v=DKIM1; h=sha256; k=rsa; p=MIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEArtgb7NF8axDNVyP5D9PQX15/mHlkcd3/dNAo/sW9yFb6n/qAF2zF0+IMimGo6MKi/vyOLoQ5+Dc/tRWCySCF7n/yQZYh2wjsklBnR0+As0gYeEBTgM5w35IYy5XV0c6UtXjlGV/xNH9sJCZOu18jy8+FPEF7eLDF77Lx0jN51mAU3BlPkmt+wweHu4xiRO8fPt1ioUU0JjQbX0RnFSFMv/tXGeyI1ZtuW9qJSSqAAZtJqXPWTsq53nr6LugYAn45s2GCKqCMGlcd8GJdfX4KhjFBz6JBK8MeZsQJHVQ7R9IsqHKuImU48RrloMPEJaFtY4v4qzQTL4v0gY2uJub0i8ikvfAgxzYcquX0urd6oPSCs0LsVqwf3TWJT5Q/b0pzdoptIkx1u8LBhlrEuIMHCkCuYAbgku2ExZXkjcsiBD8V7c4oTR+m7G6XhMCFdlxKlgo2tKDtTMJWxuSPrWmccYkaTTI0BoMC7S9DOORwyOxrFXUP4438DBhkIy5+moKvq3+bsr9ZYEOTIT6iGtxF9tFaNI+LIZbexcQK0uDfUh5ZlCgYQIvC3GlVqczjbA2OINVgUNjzg0rPN5g9HGC2IUsJVV5JBOxry2xxgRaZoAGHTfulBpTvPAPmlchT6Hv8XUevFwPn55SqWlV3Ln2197yB/cGdzWFeGXTQzKU9tkUCAwEAAQ==

@@ -3,8 +3,8 @@ version: '3.8'
 services:
   mailserver:
     image: docker.io/mailserver/docker-mailserver:latest
-    hostname: <HOSTNAME> # <-- CHANGE THIS
-    domainname: <DOMAINNAME> # <-- CHANGE THIS
+    hostname: mail
+    domainname: codestar.dev
     container_name: mailserver
     env_file: mailserver.env
     # To avoid conflicts with yaml base-60 float, DO NOT remove the quotation marks.
@@ -17,11 +17,15 @@ services:
       - "587:587"  # ESMTP (explicit TLS => STARTTLS)
       - "993:993"  # IMAP4 (implicit TLS)
     volumes:
-      - ./data/maildata:/var/mail
-      - ./data/mailstate:/var/mail-state
-      - ./data/maillogs:/var/log/mail
+      - /mnt/codestar/mailserver/maildata:/var/mail
+      - /mnt/codestar/mailserver/mailstate:/var/mail-state
+      - /mnt/codestar/mailserver/maillogs:/var/log/mail
+      - /mnt/codestar/mailserver/config:/tmp/docker-mailserver/
       - /etc/localtime:/etc/localtime:ro
-      - ./config/:/tmp/docker-mailserver/
+      - /etc/letsencrypt:/etc/letsencrypt
     restart: always
     stop_grace_period: 1m
-    cap_add: [ "NET_ADMIN", "SYS_PTRACE" ]
+    cap_add:
+      - NET_ADMIN
+      - SYS_PTRACE
+
