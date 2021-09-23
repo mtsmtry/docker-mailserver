@@ -17,11 +17,12 @@ services:
       - "587:587"  # ESMTP (explicit TLS => STARTTLS)
       - "993:993"  # IMAP4 (implicit TLS)
     volumes:
-      - ./data/maildata:/var/mail
-      - ./data/mailstate:/var/mail-state
-      - ./data/maillogs:/var/log/mail
+      - /mnt/codestar/mailserver/maildata:/var/mail
+      - /mnt/codestar/mailserver/mailstate:/var/mail-state
+      - /mnt/codestar/mailserver/maillogs:/var/log/mail
+      - /mnt/codestar/mailserver/config:/tmp/docker-mailserver/
       - /etc/localtime:/etc/localtime:ro
-      - ./config/:/tmp/docker-mailserver/
+      - /etc/letsencrypt:/etc/letsencrypt
     restart: always
     stop_grace_period: 1m
     cap_add: [ "NET_ADMIN", "SYS_PTRACE" ]
